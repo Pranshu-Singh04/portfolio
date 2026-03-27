@@ -3,76 +3,103 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 export const projectsData = [
+  // ============================================================
+  // PROJECT 1 — AI LEGAL ADVISOR (NyayaMitra)
+  // ============================================================
   {
     id: 'ai-legal-advisor',
-    title: 'AI Legal Advisor',
+    title: 'NyayaMitra — AI Legal Advisor',
     tag: 'AI / Full Stack',
     year: '2025',
-    description: 'A RAG-powered legal assistant that answers questions from uploaded documents, summarizes contracts, and provides general legal guidance — built specifically for Indian law.',
-    tech: ['Python', 'LangChain', 'OpenAI API', 'FastAPI', 'FAISS', 'React'],
+    description: 'A RAG-powered legal assistant built for Indian law. Combines hybrid dense + sparse retrieval over 600,000+ court cases and IPC statutes to answer legal questions, predict judgment outcomes, summarise case law, and explain statute sections — with source citations on every response.',
+    tech: ['Python', 'LangChain', 'FAISS', 'FastAPI', 'E5-large', 'BM25', 'Gemini API', 'React'],
     liveLink: '#',
-    githubLink: 'https://github.com/Pranshu-Singh04/Ai_Legal_Advisor',
+    githubLink: '#',
     previewBg: 'linear-gradient(135deg, #0f4c75 0%, #00b4d8 100%)',
     previewEmoji: '⚖️',
     previewLabel: 'Legal AI Assistant',
-    overview: 'AI Legal Advisor makes legal knowledge accessible to people who cannot afford a lawyer. It uses a Retrieval-Augmented Generation (RAG) pipeline to answer legal queries grounded in actual documents — not hallucinated responses. Built specifically with Indian law in mind, it handles IPC sections, contract clauses, tenancy disputes, and general legal Q&A through a conversational interface.',
+ 
+    overview: 'NyayaMitra is a full-stack AI legal advisor built specifically for the Indian legal system. It runs a hybrid retrieval pipeline over 600,000+ court cases (NyayaAnumana dataset) and Indian statutes including the IPC and BNS 2023 — giving answers that are always grounded in real case law and legislation, never hallucinated. It supports four distinct query modes: Legal Q&A, Judgment Prediction, Statute Lookup, and Case Summarisation.',
+ 
     features: [
-      'Upload any legal document (PDF/text) and ask questions directly — the RAG pipeline retrieves the most relevant chunks before generating an answer, ensuring every response is grounded in source material',
-      'General legal advice chat covering Indian Penal Code (IPC) sections, consumer rights, tenancy law, and employment law — no document upload required',
-      'Contract & agreement summarization — paste or upload a contract and get a plain-English breakdown of key clauses, obligations, and red flags',
-      'Source citation on every response — the system tells you exactly which section of which document the answer comes from so you can verify it',
-      'Conversational multi-turn interface with memory, so follow-up questions build on previous context without losing thread',
+      'Hybrid retriever combining FAISS dense search (E5-large embeddings for semantic similarity) with BM25 sparse search (keyword matching), fused via Reciprocal Rank Fusion — consistently outperforms either method alone',
+      'Four specialised query modes: Legal Q&A (answer with citations), Legal Judgment Prediction (ALLOWED/DISMISSED + confidence + reasoning from case facts), Statute Lookup (full IPC/BNS provision + plain English explanation), and Case Summarisation (FACTS / ISSUES / HELD / RATIO)',
+      'Intent classifier automatically detects query type and routes to the right prompt template — no manual mode selection needed',
+      'Model-agnostic LLM layer supporting INLegalBERT, Gemini API, and GPT-3.5 — swap models for benchmarking without changing any other code',
+      'Full source citation on every response — the system returns which specific case or statute section each answer came from, so users can verify independently',
+      'Covers Indian Penal Code, Bharatiya Nyaya Sanhita 2023, Constitution of India, and 600,000+ Supreme Court and High Court judgments',
     ],
-    challenges: 'The core problem with LLMs and legal content is hallucination — a model confidently citing a law that does not exist is worse than saying nothing. The solution was a strict RAG architecture where every answer must be derived from retrieved document chunks. If no relevant chunk is found, the model says so rather than fabricate. Embedding quality was also critical — legal language is dense and technical, so domain-appropriate sentence transformers were used over generic embeddings.',
-    docs: 'Full documentation available in the GitHub repository README.',
+ 
+    challenges: 'The core danger with LLMs in legal contexts is confident hallucination — a model inventing a section number or case name is worse than saying nothing. The solution was a strict RAG architecture where the LLM is only permitted to generate answers from retrieved document chunks; if no relevant chunk is found above threshold, the system says so. The second hard problem was retrieval quality: legal language is highly technical and keyword-heavy, which is why pure dense retrieval underperformed — adding BM25 sparse search and fusing via RRF was the key insight. Embedding quality was also critical; domain-appropriate E5-large embeddings significantly outperformed general-purpose ones on legal terminology.',
+ 
+    docs: 'Full pipeline documentation across 5 phases in the GitHub repository. Phase 3 README covers the full RAG pipeline setup and all run commands.',
   },
-  {
-  id: 'model-compression',
-  title: 'Compressing Vision-Language Models',
-  tag: 'Research · Ongoing',
-  year: '2025',
-  description: 'Ongoing research into compressing CLIP, BLIP, and LLaVA using pruning, quantization, and knowledge distillation — targeting deployment on resource-constrained and edge devices.',
-  tech: ['Python', 'PyTorch', 'Hugging Face', 'CLIP', 'BLIP', 'LLaVA', 'ONNX Runtime'],
-  liveLink: '#',
-  githubLink: 'https://github.com/Pranshu-Singh04/compression-multimodal-study',
-  previewBg: 'linear-gradient(135deg, #1e1b4b 0%, #7c3aed 100%)',
-  previewEmoji: '🧠',
-  previewLabel: 'ML Research',
-  overview: 'This research investigates the feasibility of deploying large multimodal vision-language models — specifically CLIP, BLIP, and LLaVA — on resource-constrained hardware through a combined compression strategy of structured pruning, post-training quantization, and knowledge distillation. The goal is to make powerful VLMs deployable in edge and offline AI systems without prohibitive accuracy loss.',
-  features: [
-    'Structured pruning — removes entire attention heads and feed-forward neurons based on magnitude and gradient sensitivity, producing architecturally smaller models (not just sparse ones)',
-    'Post-training quantization — reduces weight precision from FP32/FP16 to INT8 using calibration datasets, shrinking memory footprint and improving inference speed on compatible hardware',
-    'Knowledge distillation — trains a smaller student model to replicate the behaviour of the full-size teacher, preserving semantic alignment across vision and language modalities',
-    'All three techniques benchmarked on CLIP, BLIP, and LLaVA across identical compression pipelines for fair comparison',
-    'Preliminary results: ~60–70% parameter reduction with under 3% accuracy drop on classification tasks using pruning + INT8 quantization combined',
-  ],
-  challenges: 'Multimodal architectures are harder to compress than single-modality models because you are simultaneously compressing a vision encoder, a language model, and a cross-modal alignment layer — and degradation in any one component compounds across the others. Calibrating how much to prune each sub-module independently, rather than uniformly, was the key insight that improved results significantly.',
-  docs: 'Research in progress. Draft and results will be linked here upon completion.',
-  },
+ 
+  // ============================================================
+  // PROJECT 2 — LOTM PATHWAY QUIZ (Sequence Alignment Engine)
+  // ============================================================
   {
     id: 'lotm-quiz',
-    title: 'LOTM Pathway Quiz',
-    tag: 'Web App',
+    title: 'Sequence Alignment Engine',
+    tag: 'Full Stack Web App',
     year: '2025',
-    description: 'A psychology-backed personality quiz that matches you to a Beyonder Pathway from Lord of the Mysteries — think Sorting Hat, but built on actual personality psychology and weighted scoring.',
-    tech: ['React', 'JavaScript', 'Tailwind CSS', 'Vite'],
-    liveLink: '#',
-    githubLink: 'https://github.com/Pranshu-Singh04/lotm-quiz',
+    description: 'A full-stack psychological alignment quiz for Lord of the Mysteries fans. 20 questions drawn from a weighted pool of 40, a trait-weighted scoring matrix across 8 Beyonder Pathways, live global distribution stats from MongoDB, and a result page that actually explains why you got matched.',
+    tech: ['React', 'Vite', 'Node.js', 'Express', 'MongoDB', 'Mongoose', 'Axios', 'Railway', 'Vercel'],
+    liveLink: 'https://lotm-quiz.vercel.app',
+    githubLink: '#',
     previewBg: 'linear-gradient(135deg, #1a0533 0%, #6d28d9 100%)',
     previewEmoji: '🔮',
     previewLabel: 'Pathway Matcher',
-    overview: 'A personality quiz for fans of Lord of the Mysteries that determines which Beyonder Pathway you belong to. Each answer maps to personality dimensions that correspond to the nature of each Pathway — so your result feels earned rather than random. The question design draws from Big Five personality psychology, mapping traits like openness, conscientiousness, and dominance to the thematic nature of each of the 22 Pathways.',
+ 
+    overview: 'Sequence Alignment Engine is a fan-made full-stack web application for Lord of the Mysteries. It is not a BuzzFeed-style quiz — it uses a weighted scoring matrix across 8 psychological trait dimensions, stratified question sampling, and a normalised scoring algorithm to determine which Beyonder Pathway you belong to. Results are persisted to MongoDB and aggregated to show live global pathway distribution statistics across all users.',
+ 
     features: [
-      'Psychology-backed question design — each question maps to personality axes (order vs chaos, logic vs intuition, will vs emotion) that correspond to the thematic nature of each of the 22 LOTM Pathways',
-      'Weighted scoring system — answers shift your affinity across multiple Pathways simultaneously, making results nuanced rather than a simple point-bucket system',
-      'Rich result screen — your matched Pathway comes with a full description of its nature, notable Sequences, famous characters who walk it, and why it suits your personality profile',
-      'Smooth animated transitions between questions for a polished, immersive feel',
-      'Fully responsive — works on mobile without layout breakage',
+      'Stratified question sampling: 20 questions are randomly drawn each session from a pool of 40, stratified by weight tier (5 from weight-1, 8 from weight-2, 7 from weight-3) — so total maximum score is equal across all sessions regardless of which questions appear',
+      'Weighted scoring matrix: each answer carries raw scores for one or more Pathways, multiplied by question weight (1–3). A weight-3 question contributes 3× more than a weight-1 question, making psychologically significant questions matter more',
+      'Normalised result display: raw pathway scores are converted to percentages (pathway_score / total_all_scores × 100) so results show relative alignment across all 8 Pathways, not just the winner',
+      'Full-stack persistence: every result is POST-ed to an Express backend and stored in MongoDB Atlas, enabling live global distribution analytics via GET /api/analytics/distribution',
+      'Multi-page SPA flow: IntroPage → Warning → Quiz → Loading → ResultPage, all client-side routed via React Router v6 with no page reloads',
+      'Scoring runs entirely in the browser (computeScores utility) — the backend only handles storage and analytics, keeping the quiz fast even on slow connections',
     ],
-    challenges: 'The hardest part was the scoring architecture. Simple "add points to a bucket" systems produce boring, predictable results. Instead, each answer carries a weight vector across all Pathways — so consistent answers land where they should, but mixed answers produce genuinely interesting results. Question writing also took iteration; questions had to feel lore-authentic, not like generic personality test filler.',
-    docs: 'Full documentation available in the GitHub repository README.',
+ 
+    challenges: 'The hardest design problem was ensuring result fairness across different question draws. A naive random sample would mean some sessions had harder or easier paths to certain Pathways. The stratified sampling by weight tier solves this — total possible score is constant across all sessions. Writing the 40-question bank was also the most time-consuming part; questions had to feel authentic to the LOTM world and each answer needed carefully tuned scores across multiple Pathways simultaneously, not just adding points to one bucket.',
+ 
+    docs: 'Live demo at lotm-quiz.vercel.app. Full architecture and scoring algorithm documented in the GitHub README.',
+  },
+ 
+  // ============================================================
+  // PROJECT 3 — MODEL COMPRESSION (Ongoing Research)
+  // ============================================================
+  {
+    id: 'model-compression',
+    title: 'Compressing Vision-Language Models',
+    tag: 'Research · Ongoing',
+    year: '2025',
+    description: 'Ongoing research compressing CLIP (151M), BLIP (226M), and LLaVA-1.5-7B using structured pruning, INT8 quantization, and knowledge distillation — targeting edge deployment. Week 2 baselines locked. Currently building pruning modules.',
+    tech: ['Python', 'PyTorch', 'Hugging Face', 'CLIP', 'BLIP', 'LLaVA-1.5', 'BitsAndBytes', 'ONNX Runtime', 'Google Colab'],
+    liveLink: '#',
+    githubLink: '#',
+    previewBg: 'linear-gradient(135deg, #1e1b4b 0%, #7c3aed 100%)',
+    previewEmoji: '🧠',
+    previewLabel: 'ML Research',
+ 
+    overview: 'A systematic study of compression methods across three architecturally distinct vision-language models: CLIP (contrastive, 151M params), BLIP (encoder-decoder with cross-attention, 226M params), and LLaVA-1.5-7B (multimodal LLM, 7.35B params). Each model represents a different VLM paradigm, making the comparison meaningful beyond just benchmarking numbers. The research applies structured pruning, post-training INT8 quantization, and knowledge distillation, benchmarked identically across all three to identify which compression strategies generalise across VLM architectures.',
+ 
+    features: [
+      'Three architecturally distinct models studied: CLIP (no tight vision-language coupling, runs locally at 600MB), BLIP (tight coupling via 12 cross-attention layers, 900MB), and LLaVA-1.5-7B (95.4% of params in the LLM layer, requires Colab T4)',
+      'Key architectural finding from Week 1 analysis: in LLaVA-1.5, the vision tower is only 4.2% of parameters and the projector 0.3% — 92%+ lives in the language model, so compression must target the LLM not the vision encoder',
+      'Structured pruning removes entire attention heads and feed-forward neurons based on magnitude and gradient sensitivity — produces architecturally smaller models, not just sparse ones, which actually improves inference speed',
+      'Post-training INT8 quantization using BitsAndBytes NF4 config — reduces LLaVA from 14GB (FP16) to ~4GB (4-bit) with inference still working correctly, confirmed in Week 1 baseline',
+      'Evaluation across VQAv2 (visual question answering), GQA, TextVQA for LLaVA; Flickr30k retrieval for CLIP; COCO captioning (CIDEr) for BLIP — baselines locked after Week 2',
+      'Shared evaluation codebase across all three model branches (clip-work, blip-work, llava-work) with a common YAML experiment config system for reproducibility',
+    ],
+ 
+    challenges: 'Multimodal models are significantly harder to compress than single-modality ones because degradation compounds across components — compressing the vision encoder, the language model, and the cross-modal alignment layer interact with each other in non-obvious ways. The 4-bit quantization baseline also raised an interesting question: parameter counts appear halved (3.66B shown vs 7.35B reported in the paper) because bitsandbytes reports memory representation, not true parameter count — understanding this distinction was important for correctly reporting results. LLaVA also cannot run locally (14GB weights), requiring all LLaVA experiments to run on Google Colab T4 with a keep-alive loop to prevent session drops during long evaluations.',
+ 
+    docs: 'Research journal and weekly progress in JOURNAL.md. Compression strategy document in llava-work/docs/. Full results and paper forthcoming.',
   },
 ];
+ 
 
 export default function Projects() {
   const [active, setActive] = useState(0);
