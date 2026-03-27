@@ -5,28 +5,18 @@ import { useNavigate } from 'react-router-dom';
 export const researchData = [
   {
     id: 'paper-1',
-    title: 'Your Research Paper Title Here',
-    journal: 'Journal / Conference Name · 2024',
-    abstract: 'A compelling abstract summarizing the key contributions of your research. What problem does it solve, what methods did you use, and what were the findings?',
-    tags: ['Machine Learning', 'Data Analysis', 'Systems'],
+    title: 'Compressing Vision-Language Models for Edge Deployment: A Comparative Study of CLIP, BLIP, and LLaVA',
+    journal: 'Independent Research · Ongoing (2025–Present)',
+    abstract: 'Modern vision-language models have grown too large for deployment outside well-resourced cloud environments. This study systematically applies structured pruning, post-training INT8 quantization, and knowledge distillation across three architecturally distinct VLMs — CLIP (151M), BLIP (226M), and LLaVA-1.5-7B — to evaluate which compression strategies generalise across multimodal architectures. Unlike single-modality compression studies, this work must account for the interaction between vision encoders, language models, and cross-modal alignment layers, where degradation in any one component compounds across the others. Baselines locked. Pruning modules under active development.',
+    tags: ['Model Compression', 'Vision-Language Models', 'Structured Pruning', 'Quantization', 'Knowledge Distillation', 'Edge AI', 'CLIP', 'BLIP', 'LLaVA'],
     pdfLink: '#',
-    overview: 'This paper explores...',
-    methodology: 'We used a mixed-methods approach...',
-    findings: 'Our results demonstrate...',
+    githubLink: 'https://github.com/Pranshu-Singh04/compression-multimodal-study',
+    status: 'in-progress',
+    overview: 'State-of-the-art vision-language models are increasingly capable but prohibitively large for deployment outside cloud environments. This research asks: how much can you compress CLIP, BLIP, and LLaVA-1.5 before the accuracy tradeoff becomes unacceptable — and which strategies work best for multimodal architectures specifically? The three models were chosen deliberately to cover the full spectrum of VLM design: CLIP uses no tight vision-language coupling and runs locally at 600MB; BLIP uses tight cross-attention coupling at 900MB; LLaVA-1.5-7B is a full multimodal LLM where 92% of parameters live in the language model, requiring Colab T4 for inference. A key architectural insight from Week 1 analysis: in LLaVA-1.5, the vision tower is only 4.2% of parameters and the projector 0.3% — meaning compression must target the LLM layer, not the vision encoder.',
+    methodology: 'Three compression techniques are applied and benchmarked identically across all three model families. Structured pruning removes entire attention heads and feed-forward neurons based on magnitude and gradient sensitivity — producing architecturally smaller models (not just sparse ones) that actually improve inference speed on hardware. Post-training INT8 quantization uses BitsAndBytes NF4 configuration to reduce precision from FP32/FP16, confirmed working in Week 1 (LLaVA reduced from 14GB to ~4GB with correct inference). Knowledge distillation trains a smaller student model to replicate the full-size teacher, preserving cross-modal semantic alignment. Evaluation runs across VQAv2, GQA, and TextVQA for LLaVA; Flickr30k retrieval recall for CLIP; and COCO CIDEr score for BLIP. Baselines are locked after Week 2. A shared YAML experiment config system across all three model branches (clip-work, blip-work, llava-work) ensures reproducibility.',
+    findings: 'Research is actively in progress — Week 2 baselines locked, pruning modules under development in Week 3. No final results yet. Progress is tracked publicly on GitHub across three model branches. The repository will be updated weekly as experiments complete. Follow the repo to track results in real time as they come in.',
     flip: false,
-  },
-  {
-    id: 'paper-2',
-    title: 'Second Paper or Ongoing Research',
-    journal: 'Working Paper · 2025',
-    abstract: 'Description of your second paper or ongoing research. Can be a preprint, submitted paper, or work in progress.',
-    tags: ['Research', 'Methodology'],
-    pdfLink: '#',
-    overview: 'This work investigates...',
-    methodology: 'The research employs...',
-    findings: 'Preliminary findings suggest...',
-    flip: true,
-  },
+  }
 ];
 
 export default function Research() {
