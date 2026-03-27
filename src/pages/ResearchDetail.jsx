@@ -26,9 +26,8 @@ export default function ResearchDetail() {
       <div className="detail-tag-row">
         {paper.tags.map(t => <span key={t} className="detail-tag">{t}</span>)}
       </div>
-
-      <h1 className="detail-title"><span>{paper.title}</span></h1>
-
+      <h1 className="detail-title" style={{ fontSize: '1.6rem', lineHeight: '1.35', letterSpacing: '-0.01em' }}><span>{paper.title}</span></h1>
+      
       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--cyan)', letterSpacing: '0.1em', marginBottom: '2rem' }}>
         {paper.journal}
       </p>
