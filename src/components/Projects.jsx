@@ -12,7 +12,7 @@ export const projectsData = [
     tag: 'AI / Full Stack',
     year: '2025',
     description: 'A RAG-powered legal assistant built for Indian law. Combines hybrid dense + sparse retrieval over 600,000+ court cases and IPC statutes to answer legal questions, predict judgment outcomes, summarise case law, and explain statute sections — with source citations on every response.',
-    tech: ['Python', 'LangChain', 'FAISS', 'FastAPI', 'E5-large', 'BM25', 'Gemini API', 'React'],
+    tech: ['Python', 'Rag Pipeline', 'LLM-Agnostic Retrieval System','LangChain', 'FAISS', 'FastAPI', 'E5-large', 'BM25', 'Gemini API', 'React'],
     liveLink: '#',
     githubLink: '#',
     previewBg: 'linear-gradient(135deg, #0f4c75 0%, #00b4d8 100%)',
